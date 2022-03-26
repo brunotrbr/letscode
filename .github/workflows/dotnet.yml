@@ -18,8 +18,10 @@ jobs:
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
-    - name: Set project dir environment var
-      run: echo ::set-env name=PROJECT_DIR::"$GITHUB_WORKSPACE/BACK/kanban-api"
+    - name: teste
+      run: $PUBLICENV
+    - name: teste 2
+      run: $GITHUB_WORKSPACE
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
