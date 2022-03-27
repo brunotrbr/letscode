@@ -80,8 +80,19 @@ namespace kanban_api.Controllers
 
         // DELETE <CardsController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        [ProducesResponseType(typeof(List<Cards>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Delete(Guid id)
         {
+            if (database.TryGetValue(id, out _) == false)
+            {
+                var error = "Id inexistente.";
+                return NotFound(error);
+            }
+
+            database.Remove(id);
+
+            return Ok(database.Values);
         }
     }
 }
