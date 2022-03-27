@@ -1,15 +1,28 @@
+using kanban_api.BusinessLayer;
+using kanban_api.Utils;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddControllers(config =>
+{
+    #region Adiciona Custom Exception para capturar erros da Business Layer
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+    config.Filters.Add(typeof(CustomExceptionFilter));
+
+    #endregion
+});
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+#region Injeção de Dependência da Business Layer
+
+builder.Services.AddTransient<CardsBL>();
+
+#endregion
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
