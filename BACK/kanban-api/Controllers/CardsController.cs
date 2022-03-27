@@ -36,7 +36,7 @@ namespace kanban_api.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(Cards), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> Post([FromBody] CardsPost cardPost)
+        public async Task<IActionResult> Post([FromBody] CardsPost cardPost)
         {
             // Criar uma validação para verificar se já existe o guid na tabela dentro do ValidateInsert
             _cardsBL.ValidateInsert(cardPost);
@@ -52,8 +52,30 @@ namespace kanban_api.Controllers
 
         // PUT <CardsController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [ProducesResponseType(typeof(Cards), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Put(Guid id, [FromBody] Cards card)
         {
+            _cardsBL.ValidateUpdate(id, card);
+
+            Cards databaseCard;
+            if (database.TryGetValue(card.Id, out databaseCard) == false)
+            {
+                var error = "Id inexistente.";
+                return NotFound(error);
+                
+            }
+
+            databaseCard = database[card.Id];
+            databaseCard.Titulo = card.Titulo;
+            databaseCard.Conteudo = card.Conteudo;
+            databaseCard.Lista = card.Lista;
+
+            database[card.Id] = databaseCard;
+
+            var newCard = database[card.Id];
+            return Ok(newCard);
         }
 
         // DELETE <CardsController>/5
