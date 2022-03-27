@@ -31,7 +31,7 @@ Para criar sua API você pode escolher entre duas tecnologias:
 
 3. O login e senha fornecidos devem estar em variáveis de ambiente e terem uma versão para o ambiente de desenvolvimento vinda de um arquivo .env no node ou de um arquivo de configuração no ASP.NET. Esse arquivo não deve subir ao GIT, mas sim um arquivo de exemplo sem os valores reais. O mesmo vale para qualquer "segredo" do sistema, como a chave do JWT.
 
-4. Um card terá o seguinte formato: 
+[ok] 4. Um card terá o seguinte formato: 
 
 ```
 id: int | (guid [c#] | uuid [node])
@@ -40,7 +40,7 @@ conteudo: string,
 lista: string
 ```
 
-5. Os entrypoints da aplicação devem usar a porta 5000 e ser:
+[ok] 5. Os entrypoints da aplicação devem usar a porta 5000 e ser:
 
 ```
 (POST)      http://0.0.0.0:5000/login/

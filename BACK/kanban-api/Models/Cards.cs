@@ -1,7 +1,10 @@
-﻿namespace kanban_api.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace kanban_api.Models
 {
     public class Cards
     {
+        [Key]
         public Guid Id { get; }
         public string Titulo { get; set; }
         public string Conteudo { get; set;}
