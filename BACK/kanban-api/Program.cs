@@ -23,6 +23,15 @@ builder.Services.AddControllers(config =>
     #endregion
 });
 
+var AllowedOrigins = "_AllowSubdomainPolicy";
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(builder => {
+        //builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
+        builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
+
 #region Injeção de dependência do token jwt
 
 var tokenConfigurations = new TokenConfigurations();
@@ -106,6 +115,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
 
