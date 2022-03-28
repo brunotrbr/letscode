@@ -27,7 +27,7 @@ Para criar sua API você pode escolher entre duas tecnologias:
 
 [ok] 1. O sistema deve ter um mecanismo de login usando JWT, com um entrypoint que recebe `{ "login":"letscode", "senha":"lets@123"}` e gera um token.
 
-2. O sistema deve ter um middleware que valide se o token é correto, valido e não está expirado, antes de permitir acesso a qualquer outro entrypoint. Em caso negativo retorne status 401.
+[ok] 2. O sistema deve ter um middleware que valide se o token é correto, valido e não está expirado, antes de permitir acesso a qualquer outro entrypoint. Em caso negativo retorne status 401.
 
 3. O login e senha fornecidos devem estar em variáveis de ambiente e terem uma versão para o ambiente de desenvolvimento vinda de um arquivo .env no node ou de um arquivo de configuração no ASP.NET. Esse arquivo não deve subir ao GIT, mas sim um arquivo de exemplo sem os valores reais. O mesmo vale para qualquer "segredo" do sistema, como a chave do JWT.
 
@@ -83,15 +83,15 @@ Exemplo:
 
 ## Diferenciais e critérios de avaliação
 
-Arquiteturas que separem responsabilidades, de baixo acoplamento e alta-coesão são preferíveis, sobretudo usando dependências injetadas, que permitam maior facilidade para testes unitários e de integração.
+[ok] Arquiteturas que separem responsabilidades, de baixo acoplamento e alta-coesão são preferíveis, sobretudo usando dependências injetadas, que permitam maior facilidade para testes unitários e de integração.
 
-Avaliaremos se o código é limpo (com boa nomenclatura de classes, variáveis, métodos e funções) e dividido em arquivos bem nomeados, de forma coesa e de acordo com boas práticas. Bem como práticas básicas como tratamento de erros.
+[ok] Avaliaremos se o código é limpo (com boa nomenclatura de classes, variáveis, métodos e funções) e dividido em arquivos bem nomeados, de forma coesa e de acordo com boas práticas. Bem como práticas básicas como tratamento de erros.
 
 Desacoplar e testar as regras de negócios / validações / repositório com testes unitários será considerado um diferencial.
 
-O uso de typescript no node acompanhado das devidas configurações e tipagens bem feitas, bem como uso de técnicas de abstração usando interfaces (especialmente do repositório) serão consideradas um deferencial.
+[não aplicável] O uso de typescript no node acompanhado das devidas configurações e tipagens bem feitas, bem como uso de técnicas de abstração usando interfaces (especialmente do repositório) serão consideradas um deferencial.
 
-O uso de Linter será considerado um diferencial.
+[não aplicável] O uso de Linter será considerado um diferencial.
 
 A criação de um docker-compose e de dockerfiles que ao rodar `docker-compose up` subam o sistema por completo (front, back e banco [se houver]) será considerado um diferencial.
 
