@@ -1,5 +1,9 @@
 using kanban_api.BusinessLayer;
+using kanban_api.Context;
+using kanban_api.Interfaces;
+using kanban_api.Repository;
 using kanban_api.Utils;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,9 +19,22 @@ builder.Services.AddControllers(config =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-#region Injeção de Dependência da Business Layer
+#region Injeção de dependência da Business Layer
 
 builder.Services.AddTransient<CardsBL>();
+
+#endregion
+
+#region Injeção de dependência do Repository
+
+builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+
+#endregion
+
+#region Adição do contexto do Entity Framework e uso de banco de dados em memória
+
+builder.Services.AddDbContext<KanbanContext>(options =>
+options.UseInMemoryDatabase("Kanban"));
 
 #endregion
 
