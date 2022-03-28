@@ -1,6 +1,7 @@
 ﻿using kanban_api.BusinessLayer;
 using kanban_api.Interfaces;
 using kanban_api.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -20,8 +21,9 @@ namespace kanban_api.Controllers
             _cardsBL = cardsBL;
         }
         // GET: <CardsController>
-        [HttpGet]
+        [HttpGet, Authorize]
         [ProducesResponseType(typeof(List<Cards>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Get()
         {
             var cards = await _repository.Get();
@@ -29,9 +31,10 @@ namespace kanban_api.Controllers
         }
 
         // POST <CardsController>
-        [HttpPost]
+        [HttpPost, Authorize]
         [ProducesResponseType(typeof(Cards), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Post([FromBody] CardsPost cardPost)
         {
             _cardsBL.ValidateInsert(cardPost);
@@ -46,9 +49,10 @@ namespace kanban_api.Controllers
         }
 
         // PUT <CardsController>/5
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize]
         [ProducesResponseType(typeof(Cards), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Put(Guid id, [FromBody] Cards card)
         {
@@ -73,8 +77,9 @@ namespace kanban_api.Controllers
         }
 
         // DELETE <CardsController>/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}"), Authorize]
         [ProducesResponseType(typeof(List<Cards>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(Guid id)
         {
