@@ -9,9 +9,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers(config =>
 {
-    #region Adiciona Custom Exception para capturar erros da Business Layer
+    #region Adiciona Custom Exception e Log para capturar erros da Business Layer e gravar quando chama PUT e DELETE
 
     config.Filters.Add(typeof(CustomExceptionFilter));
+    config.Filters.Add(typeof(LogFilter));
 
     #endregion
 });
