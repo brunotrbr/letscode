@@ -25,17 +25,14 @@ namespace kanban_api.Controllers
         [HttpPost]
         [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
-        public IActionResult Post([FromBody] Login userData)
+        public IActionResult Post([FromBody] User userData)
         {
-            _loginBL.ValidateParameters(userData.Username, userData.Password);
+            _loginBL.ValidateParameters(userData.Login, userData.Senha);
 
             var generateToken = new GenerateToken(_tokenConfiguration);
-            string accessToken = generateToken.GenerateJWT(userData.Username, userData.Password);
+            string accessToken = generateToken.GenerateJWT(userData.Login, userData.Senha);
 
-            Dictionary<string, string> response = new Dictionary<string, string>();
-            response.Add("AccessToken", accessToken);
-
-            return Ok(response);
+            return Ok(accessToken);
         }
     }
 }
