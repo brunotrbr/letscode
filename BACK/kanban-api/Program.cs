@@ -4,8 +4,12 @@ using kanban_api.Context;
 using kanban_api.Interfaces;
 using kanban_api.Repository;
 using kanban_api.Utils;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,12 +20,62 @@ builder.Services.AddControllers(config =>
 
     config.Filters.Add(typeof(CustomExceptionFilter));
     config.Filters.Add(typeof(LogFilter));
-
     #endregion
 });
 
+#region Injeção de dependência do token jwt
+
+var tokenConfigurations = new TokenConfigurations();
+new ConfigureFromConfigurationOptions<TokenConfigurations>(
+    builder.Configuration.GetSection("TokenConfigurations"))
+            .Configure(tokenConfigurations);
+
+builder.Services.AddSingleton(tokenConfigurations);
+
+#endregion
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(option =>
+{
+    option.TokenValidationParameters = new TokenValidationParameters()
+    {
+        ClockSkew = TimeSpan.Zero,
+        ValidateAudience = true,
+        ValidateIssuer = true,
+        ValidateIssuerSigningKey = true,
+        ValidateLifetime = true,
+        ValidAudience = tokenConfigurations.Audience,
+        ValidIssuer = tokenConfigurations.Issuer,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenConfigurations.Secret))
+    };
+});
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(option =>
+{
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Informe o token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "bearer"
+    });
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+});
 
 #region Injeção de dependência da Business Layer
 
@@ -36,16 +90,7 @@ builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
 #endregion
 
-#region Injeção de dependência do token jwt
 
-var tokenConfigurations = new TokenConfigurations();
-new ConfigureFromConfigurationOptions<TokenConfigurations>(
-    builder.Configuration.GetSection("TokenConfigurations"))
-            .Configure(tokenConfigurations);
-
-builder.Services.AddSingleton(tokenConfigurations);
-
-#endregion
 #region Adição do contexto do Entity Framework e uso de banco de dados em memória
 
 builder.Services.AddDbContext<KanbanContext>(options =>
@@ -61,6 +106,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
