@@ -65,7 +65,7 @@ lista: string
 
 12. O campo conteúdo do card aceitará markdown, isso não deve impactar no backend, mas não custa avisar...
 
-13. Faça um filter (asp.net) ou middleware (nodejs) que escreva no console sempre que os entrypoints de alteração ou remoção forem usados, indicando o horário formatado como o datetime a seguir: `01/01/2021 13:45:00`. 
+[ok] 13. Faça um filter (asp.net) ou middleware (nodejs) que escreva no console sempre que os entrypoints de alteração ou remoção forem usados, indicando o horário formatado como o datetime a seguir: `01/01/2021 13:45:00`. 
 
 A linha de log deve ter o seguinte formato (se a requisição for válida):
 
