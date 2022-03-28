@@ -63,7 +63,7 @@ lista: string
 
 **[se sobrar tempo]** 11. Se preferir optar por utilizar um banco de dados "real", adicione um docker-compose em seu repositório que coloque a aplicação e o banco em execução, quando executado `docker-compose up` na raiz. A connection string e a senha do banco devem ser setados por ENV nesse arquivo.
 
-12. O campo conteúdo do card aceitará markdown, isso não deve impactar no backend, mas não custa avisar...
+[ok] 12. O campo conteúdo do card aceitará markdown, isso não deve impactar no backend, mas não custa avisar...
 
 [ok] 13. Faça um filter (asp.net) ou middleware (nodejs) que escreva no console sempre que os entrypoints de alteração ou remoção forem usados, indicando o horário formatado como o datetime a seguir: `01/01/2021 13:45:00`. 
 
