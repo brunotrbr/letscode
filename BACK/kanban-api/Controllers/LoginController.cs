@@ -1,43 +1,41 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using kanban_api.BusinessLayer;
+using Microsoft.AspNetCore.Mvc;
+using kanban_api.Utils.GenerateToken;
+using kanban_api.Models;
+using kanban_api.Authentication;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace kanban_api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class LoginController : ControllerBase
     {
-        // GET: api/<LoginController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly LoginBL _loginBL;
+        private readonly TokenConfigurations _tokenConfiguration;
+
+        public LoginController(LoginBL loginBL, TokenConfigurations tokenConfiguration)
         {
-            return new string[] { "value1", "value2" };
+            _loginBL = loginBL;
+            _tokenConfiguration = tokenConfiguration;
         }
 
-        // GET api/<LoginController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<LoginController>
+        // POST <LoginController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
+        public IActionResult Post([FromBody] Login userData)
         {
-        }
+            _loginBL.ValidateParameters(userData.Username, userData.Password);
 
-        // PUT api/<LoginController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+            var generateToken = new GenerateToken(_tokenConfiguration);
+            string accessToken = generateToken.GenerateJWT(userData.Username, userData.Password);
 
-        // DELETE api/<LoginController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            Dictionary<string, string> response = new Dictionary<string, string>();
+            response.Add("AccessToken", accessToken);
+
+            return Ok(response);
         }
     }
 }

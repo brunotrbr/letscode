@@ -1,11 +1,14 @@
+using kanban_api.Authentication;
 using kanban_api.BusinessLayer;
 using kanban_api.Context;
 using kanban_api.Interfaces;
 using kanban_api.Repository;
 using kanban_api.Utils;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 builder.Services.AddControllers(config =>
 {
@@ -23,6 +26,7 @@ builder.Services.AddSwaggerGen();
 #region Injeção de dependência da Business Layer
 
 builder.Services.AddTransient<CardsBL>();
+builder.Services.AddTransient<LoginBL>();
 
 #endregion
 
@@ -32,6 +36,16 @@ builder.Services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
 
 #endregion
 
+#region Injeção de dependência do token jwt
+
+var tokenConfigurations = new TokenConfigurations();
+new ConfigureFromConfigurationOptions<TokenConfigurations>(
+    builder.Configuration.GetSection("TokenConfigurations"))
+            .Configure(tokenConfigurations);
+
+builder.Services.AddSingleton(tokenConfigurations);
+
+#endregion
 #region Adição do contexto do Entity Framework e uso de banco de dados em memória
 
 builder.Services.AddDbContext<KanbanContext>(options =>
