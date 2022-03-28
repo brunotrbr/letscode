@@ -1,6 +1,6 @@
 ﻿using kanban_api.BusinessLayer;
+using kanban_api.Interfaces;
 using kanban_api.Models;
-using kanban_api.Utils;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,24 +12,20 @@ namespace kanban_api.Controllers
     public class CardsController : ControllerBase
     {
         private readonly CardsBL _cardsBL;
-        private Dictionary<Guid, Cards> database = new Dictionary<Guid, Cards>();
+        private readonly IBaseRepository<Cards> _repository;
 
-        public CardsController(CardsBL cardsBL)
+        public CardsController(IBaseRepository<Cards> repository, CardsBL cardsBL)
         {
+            _repository = repository;
             _cardsBL = cardsBL;
         }
         // GET: <CardsController>
         [HttpGet]
-        public IEnumerable<string> Get()
+        [ProducesResponseType(typeof(List<Cards>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Get()
         {
-            return new string[] { "value1", "value2" };
-        }
-
-        // GET <CardsController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
+            var cards = await _repository.Get();
+            return Ok(cards);
         }
 
         // POST <CardsController>
@@ -38,14 +34,13 @@ namespace kanban_api.Controllers
         [ProducesResponseType(typeof(List<string>), StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post([FromBody] CardsPost cardPost)
         {
-            // Criar uma validação para verificar se já existe o guid na tabela dentro do ValidateInsert
             _cardsBL.ValidateInsert(cardPost);
 
             Cards card = new Cards(cardPost.Titulo, cardPost.Conteudo, cardPost.Lista);
 
-            await Task.Run(() => { database.Add(card.Id, card); });
+            _ = await _repository.Insert(card);
 
-            var newCard = await Task.Run(() => { return database[card.Id]; });
+            var newCard = await _repository.GetByKey(card.Id);
 
             return Created(String.Empty, newCard);
         }
@@ -59,23 +54,22 @@ namespace kanban_api.Controllers
         {
             _cardsBL.ValidateUpdate(id, card);
 
-            Cards databaseCard;
-            if (database.TryGetValue(card.Id, out databaseCard) == false)
+            var databaseCard = await _repository.GetByKey(id);
+
+            if (databaseCard == null)
             {
                 var error = "Id inexistente.";
                 return NotFound(error);
-                
             }
-
-            databaseCard = database[card.Id];
             databaseCard.Titulo = card.Titulo;
             databaseCard.Conteudo = card.Conteudo;
             databaseCard.Lista = card.Lista;
 
-            database[card.Id] = databaseCard;
+            _ = await _repository.Update(id, databaseCard);
 
-            var newCard = database[card.Id];
-            return Ok(newCard);
+            databaseCard = await _repository.GetByKey(id);
+
+            return Ok(databaseCard);
         }
 
         // DELETE <CardsController>/5
@@ -84,15 +78,18 @@ namespace kanban_api.Controllers
         [ProducesResponseType(typeof(string), StatusCodes.Status404NotFound)]
         public async Task<IActionResult> Delete(Guid id)
         {
-            if (database.TryGetValue(id, out _) == false)
+            var databaseCard = await _repository.GetByKey(id);
+
+            if (databaseCard == null)
             {
                 var error = "Id inexistente.";
                 return NotFound(error);
             }
 
-            database.Remove(id);
+            _ = await _repository.Delete(id);
 
-            return Ok(database.Values);
+            var cards = await _repository.Get();
+            return Ok(cards);
         }
     }
 }
