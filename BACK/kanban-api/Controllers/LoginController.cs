@@ -15,7 +15,7 @@ namespace kanban_api.Controllers
         private readonly LoginBL _loginBL;
         private readonly TokenConfigurations _tokenConfiguration;
 
-        public LoginController(LoginBL loginBL, TokenConfigurations tokenConfiguration)
+        public LoginController(LoginBL loginBL, TokenConfigurations tokenConfiguration, LoginConfigurations loginConfigurations)
         {
             _loginBL = loginBL;
             _tokenConfiguration = tokenConfiguration;

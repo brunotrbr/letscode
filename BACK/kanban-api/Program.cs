@@ -23,11 +23,10 @@ builder.Services.AddControllers(config =>
     #endregion
 });
 
-var AllowedOrigins = "_AllowSubdomainPolicy";
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder => {
-        //builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost");
         builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
     });
 });
@@ -40,6 +39,17 @@ new ConfigureFromConfigurationOptions<TokenConfigurations>(
             .Configure(tokenConfigurations);
 
 builder.Services.AddSingleton(tokenConfigurations);
+
+#endregion
+
+#region Injeção de dependência do login
+
+var loginConfigurations = new LoginConfigurations();
+new ConfigureFromConfigurationOptions<LoginConfigurations>(
+    builder.Configuration.GetSection("LoginConfigurations"))
+            .Configure(loginConfigurations);
+
+builder.Services.AddSingleton(loginConfigurations);
 
 #endregion
 
