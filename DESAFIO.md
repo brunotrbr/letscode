@@ -57,11 +57,11 @@ lista: string
 
 [ok] 8. Para remover um card, o entrypoint deve receber um id pela URL. Caso o id não exista retorne 404. Se a remoção for bem sucedida retorne a lista de cards.
 
-9. A listagem de cards deve enviar todos os cards em formato json, contendo as informações completas. 
+[ok] 9. A listagem de cards deve enviar todos os cards em formato json, contendo as informações completas. 
 
-10. Deve ser usada alguma forma de persistência, no C# pode-se usar o Entity Framework (in-memory), no nodeJS pode ser usado Sequelize + sqlite (in-memory) ou diretamente o driver do sqlite (in-memory).
+[ok] 10. Deve ser usada alguma forma de persistência, no C# pode-se usar o Entity Framework (in-memory), no nodeJS pode ser usado Sequelize + sqlite (in-memory) ou diretamente o driver do sqlite (in-memory).
 
-11. Se preferir optar por utilizar um banco de dados "real", adicione um docker-compose em seu repositório que coloque a aplicação e o banco em execução, quando executado `docker-compose up` na raiz. A connection string e a senha do banco devem ser setados por ENV nesse arquivo.
+**[se sobrar tempo]** 11. Se preferir optar por utilizar um banco de dados "real", adicione um docker-compose em seu repositório que coloque a aplicação e o banco em execução, quando executado `docker-compose up` na raiz. A connection string e a senha do banco devem ser setados por ENV nesse arquivo.
 
 12. O campo conteúdo do card aceitará markdown, isso não deve impactar no backend, mas não custa avisar...
 
