@@ -4,12 +4,12 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:6247",
-      "sslPort": 44308
+      "applicationUrl": "http://localhost:32429",
+      "sslPort": 44348
     }
   },
   "profiles": {
-    "kanban_api": {
+    "BACK": {
       "commandName": "Project",
       "launchUrl": "swagger",
       "environmentVariables": {
@@ -25,6 +25,13 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "launchBrowser": true,
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
+      "publishAllPorts": true,
+      "useSSL": true
     }
   }
 }
