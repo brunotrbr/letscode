@@ -6,7 +6,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["/BACK/kanban-api/kanban-api.csproj", "."]
+COPY ["/BACK/kanban-api.csproj", "."]
 RUN dotnet restore "./kanban-api.csproj"
 COPY . .
 WORKDIR "/src/."
