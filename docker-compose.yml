@@ -1,0 +1,44 @@
+version: '2.4'
+
+networks:
+  local_kanban:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.90.0.0/24"
+
+services:
+  kanban_api:
+    image: kanban_api:latest
+    ports:
+      - "5000:80"
+    expose:
+      - "5000"
+    volumes:
+      - ./:/opt/command
+      - ./backend:/opt/app
+    mem_limit: 1GB
+    command: ["dotnet", "kanban-api.dll"]
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    networks:
+      local_kanban:
+        aliases:
+          - kanban_api
+      
+  front:
+    image: kanban_frontend:latest
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    volumes:
+      - ./:/opt/command
+      - ./frontend:/opt/app
+    working_dir: /opt/app
+    command: ["yarn", "start"]
+    networks:
+      local_kanban:
+        aliases:
+          - kanban_front 
+          
