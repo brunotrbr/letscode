@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/bin/bash
 
 ## Build dos Dockerfiles do backend e do frontend
 echo "Build dos Dockerfiles do backend e do frontend"
