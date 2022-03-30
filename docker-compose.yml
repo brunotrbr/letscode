@@ -1,7 +1,7 @@
 version: '2.4'
 
 networks:
-  local_kanban:
+  kanban:
     ipam:
       driver: default
       config:
@@ -22,7 +22,7 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: Development
     networks:
-      local_kanban:
+      kanban:
         aliases:
           - kanban_api
       
@@ -38,7 +38,6 @@ services:
     working_dir: /opt/app
     command: ["yarn", "start"]
     networks:
-      local_kanban:
+      kanban:
         aliases:
           - kanban_front 
-          
