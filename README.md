@@ -1,7 +1,7 @@
 # letscode
 ## Desafio técnico de backend - Lets Code
 
-```
+
 UPDATE:
 
 Olá,
@@ -14,7 +14,7 @@ Hoje finalizei a orquestração para facilitar a avaliação do código, pois ti
 É importante salientar que as alterações foram somente a inclusão dos dockerfiles e do docker-compose.yml, sem alterar nenhum outro arquivo/código/requisito do projeto.
 
 Agradeço pela compreensão.
-```
+
 
 
 ## Para subir com o docker, execute os procedimentos abaixo:
