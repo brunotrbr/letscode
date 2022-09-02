@@ -8,5 +8,6 @@ cd BACK/kanban-api
 docker build -t kanban_api .
 cd ../../FRONT
 docker build -t kanban_frontend .
+cd ../
 
 echo "Imagens buildadas, executar docker-compose up"

@@ -16,7 +16,6 @@ services:
       - "5000"
     volumes:
       - ./:/opt/command
-      - ./backend:/opt/app
     mem_limit: 1GB
     command: ["dotnet", "kanban-api.dll"]
     environment:
@@ -34,7 +33,6 @@ services:
       - "3000"
     volumes:
       - ./:/opt/command
-      - ./frontend:/opt/app
     working_dir: /opt/app
     command: ["yarn", "start"]
     networks:

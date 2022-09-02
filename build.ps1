@@ -6,5 +6,6 @@ Set-Location -Path "BACK/kanban-api"
 docker build -t kanban_api .
 Set-Location -Path "..\..\FRONT"
 docker build -t kanban_frontend .
+Set-Location -Path "..\"
 
 write-host("Imagens buildadas, executar docker-compose up")
