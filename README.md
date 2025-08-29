@@ -1,22 +1,6 @@
 # letscode
 ## Desafio técnico de backend - Lets Code
 
-
-UPDATE:
-
-Olá,
-
-Fiz a entrega da URL para a Raquel na segunda feira até o horário combinado, 19h, mas não tive tempo de implementar a orquestração dos containers e nem de fazer os testes unitários e de sistema.
-
-
-Hoje finalizei a orquestração para facilitar a avaliação do código, pois tive um pouco mais de tempo para trabalhar. Optei por não fazer os testes, pois isso levaria mais alguns dias, e o prazo já havia estourado.
-
-É importante salientar que as alterações foram somente a inclusão dos dockerfiles e do docker-compose.yml, sem alterar nenhum outro arquivo/código/requisito do projeto.
-
-Agradeço pela compreensão.
-
-
-
 ## Para subir com o docker, execute os procedimentos abaixo:
 1. Efetue o clone do repositório
 ```
